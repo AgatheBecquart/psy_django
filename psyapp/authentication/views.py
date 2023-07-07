@@ -5,14 +5,28 @@ from django.shortcuts import redirect, render
 from . import forms
 
 
-def signup_page(request):
-    form = forms.SignupForm()
-    if request.method == 'POST':
-        form = forms.SignupForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            # auto-login user
-            login(request, user)
-            return redirect(settings.LOGIN_REDIRECT_URL)
-    return render(request, 'authentication/signup.html', context={'form': form})
+from django.shortcuts import render, redirect
+from .forms import PsychologueRegistrationForm, PatientRegistrationForm
 
+def psychologue_registration_view(request):
+    if request.method == 'POST':
+        form = PsychologueRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')  # Redirigez vers la page d'accueil après l'inscription réussie
+    else:
+        form = PsychologueRegistrationForm()
+    
+    return render(request, 'authentication/psychologue_registration.html', {'form': form})
+
+
+def patient_registration_view(request):
+    if request.method == 'POST':
+        form = PatientRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')  # Redirigez vers la page d'accueil après l'inscription réussie
+    else:
+        form = PatientRegistrationForm()
+    
+    return render(request, 'authentication/patient_registration.html', {'form': form})

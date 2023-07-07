@@ -3,7 +3,8 @@
     <form method="post">
         {{ form.as_p }}
         {% csrf_token %}
-        <button type="submit" >Se connecter</button>
+        <button type="submit">Se connecter</button>
     </form>
-    <p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
-{% endblock content %}
+    <p>Pas encore membre ? <a href="{% url 'patient_registration' %}">Inscrivez-vous maintenant !</a></p>
+    <p>Vous êtes psychologue ? <a href="{% url 'psychologue_registration' %}" class="btn btn-primary">Inscrivez-vous en tant que psychologue</a></p>
+{% endblock %}

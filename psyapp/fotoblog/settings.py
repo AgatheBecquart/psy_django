@@ -117,7 +117,9 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'authentication.User'
+AUTH_USER_MODEL = 'authentication.Psychologue'  
+
+AUTH_USER_MODEL = 'authentication.Patient'  
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'

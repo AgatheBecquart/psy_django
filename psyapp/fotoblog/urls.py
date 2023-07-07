@@ -21,6 +21,7 @@ urlpatterns = [
         template_name='authentication/password_change_done.html'),
          name='password_change_done'
          ),
-    path('signup/', authentication.views.signup_page, name='signup'),
+    path('psychologue/inscription/', authentication.views.psychologue_registration_view, name='psychologue_registration'),
+    path('patient/inscription/', authentication.views.patient_registration_view, name='patient_registration'),
     path('home/', blog.views.home, name='home'),
 ]
