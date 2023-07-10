@@ -68,8 +68,12 @@ WSGI_APPLICATION = 'fotoblog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_psy',
+        'USER': 'manon',
+        'PASSWORD': 'Youpie-59',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
@@ -117,9 +121,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'authentication.Psychologue'  
-
-AUTH_USER_MODEL = 'authentication.Patient'  
+AUTH_USER_MODEL = 'authentication.BaseUser'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
