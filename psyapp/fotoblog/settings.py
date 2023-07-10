@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'blog',
+    'django_elasticsearch_dsl',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,9 @@ AUTH_USER_MODEL = 'authentication.BaseUser'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = LOGIN_URL
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'  # ou l'adresse IP de votre serveur Elasticsearch
+    },
+}
