@@ -1,10 +1,18 @@
-from django_elasticsearch_dsl import Document
+from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
-from .models import Text
+from .models import Text, Patient
 
 
 @registry.register_document
 class TextDocument(Document):
+    patient = fields.ObjectField(properties={
+        'name': fields.TextField(),
+        
+        # Ajoutez d'autres propriétés du modèle Patient que vous souhaitez indexer
+    })
+    score = fields.FloatField()
+    label = fields.KeywordField()
+    
     class Index:
         # Name of the Elasticsearch index
         name = 'textes'
@@ -21,6 +29,10 @@ class TextDocument(Document):
             "text",
             "emotion",
         ]
+    
+    def get_instances_from_related(self, related_instance):
+        if isinstance(related_instance, Patient):
+            return related_instance.text_set.all()
 
         # Ignore auto updating of Elasticsearch when a model is saved
         # or deleted:

@@ -1,0 +1,16 @@
+
+{% block content %}
+  <h1>Text Entry</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Soumettre</button>
+  </form>
+    
+    {% if emotions %}
+    <p>Texte:  {{text}} </p>
+    <p>Label: {{ emotions.label }}</p>
+    <p>Score: {{ emotions.score|floatformat:2 }}</p>
+    {% endif %}
+
+{% endblock %}

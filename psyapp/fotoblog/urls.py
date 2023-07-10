@@ -24,4 +24,6 @@ urlpatterns = [
     path('psychologue/inscription/', authentication.views.psychologue_registration_view, name='psychologue_registration'),
     path('patient/inscription/', authentication.views.patient_registration_view, name='patient_registration'),
     path('home/', blog.views.home, name='home'),
+    path('text/create/', blog.views.TextCreateView.as_view(), name='create_text'),
 ]
+
