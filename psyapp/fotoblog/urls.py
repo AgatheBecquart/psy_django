@@ -24,4 +24,6 @@ urlpatterns = [
     path('psychologue/inscription/', authentication.views.psychologue_registration_view, name='psychologue_registration'),
     path('patient/inscription/', authentication.views.patient_registration_view, name='patient_registration'),
     path('home/', blog.views.home, name='home'),
+    path('patient_text_entry/', blog.views.patient_text_entry, name='patient_text_entry'),
+    path('register_patient/', authentication.views.register_patient, name='register_patient')
 ]

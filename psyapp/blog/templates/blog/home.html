@@ -1,4 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-    <p>Vous êtes connecté !</p>
+    {% if user_type == 'psychologue' %}
+    <h1>Bienvenue sur votre tableau de bord, psychologue !</h1>
+        <ul>
+        <li><a href="#repartition">Répartition des émotions</a></li>
+        <li><a href="#recherche">Recherche des émotions d'un patient</a></li>
+        <li><a href="#recherche-textes">Recherche de textes</a></li>
+        <li><a href="{% url 'register_patient' %}">Créer un nouveau patient</a></li>
+        </ul>
+    {% elif user_type == 'patient' %}
+    <h1>Bienvenue sur le tableau de bord</h1>
+        <ul>
+        <li><a href="{% url 'patient_text_entry' %}">Créer un nouveau texte</a></li>
+        </ul>
+    {% endif %}
 {% endblock content %}

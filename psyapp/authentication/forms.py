@@ -19,3 +19,5 @@ class PatientRegistrationForm(UserCreationForm):
     class Meta:
         model = Patient
         fields = ('username', 'password1', 'password2', 'date_naissance', 'adresse', 'psychologue_referent')
+
+
