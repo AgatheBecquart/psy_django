@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Inscription d'un nouveau patient</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      {% if field.name != 'psychologue_referent' %}
+        <div class="form-group">
+          {{ field.label_tag }}
+          {{ field }}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <button type="submit">Inscrire le patient</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,81 @@
+body{
+    text-align: center;
+}
+
+main{
+    min-height: 750px;    
+    margin-top: 3%;
+
+}
+
+.post-it {
+    background-color: #E1C699; /* couleur de fond */
+    color: black; /* couleur du texte */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* effet d'ombre */
+    margin: 20px;
+}
+
+.post-it a {
+    color : black;
+    text-decoration: none;
+}
+
+.italic {
+    font-style: italic;
+}
+
+#post-it {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+ul{
+    list-style: none;
+}
+
+#entete a{
+    color: black;
+    --bs-nav-pills-link-active-bg : rgb(178, 201, 220);
+} 
+
+form {
+    background-color: #f7f7f7; /* couleur de fond */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* effet d'ombre */
+    width: 50%;
+    margin: auto;
+}
+
+input[type="text"], input[type="password"], input[type="email"], textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* effet d'ombre */
+    width: 100%;
+}
+
+button[type="submit"] {
+    background-color: #9c9fa1; /* couleur de fond du bouton */
+    color: #fff; /* couleur du texte du bouton */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #71a0d3; /* couleur de fond du bouton au survol */
+}
+
+#gif-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+  }
+  
