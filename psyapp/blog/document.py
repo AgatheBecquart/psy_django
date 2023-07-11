@@ -6,12 +6,11 @@ from .models import Text, Patient
 @registry.register_document
 class TextDocument(Document):
     patient = fields.ObjectField(properties={
-        'name': fields.TextField(),
+        'id': fields.IntegerField(),
+        'psychologue_referent':fields.IntegerField(attr='psychologue_referent_id'),
         
         # Ajoutez d'autres propriétés du modèle Patient que vous souhaitez indexer
     })
-    score = fields.FloatField()
-    label = fields.KeywordField()
     
     class Index:
         # Name of the Elasticsearch index

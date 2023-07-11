@@ -53,13 +53,14 @@ class TextCreateView(View):
             patient = Patient.objects.get(baseuser_ptr_id=patient_id)
             emotion = emotions_list[0]['label']
             # form.instance.patient = patient
-            new_text = Text.objects.create(text=text,patient=patient,emotion=emotion)
+            new_text = Text.objects.create(text=text,patient=patient,emotion=emotion,psychologue_referent=patient.psychologue_referent)
             
             # Enregistrer le texte dans la base Elasticsearch
             text_document = TextDocument(meta={'id': new_text.id})
             text_document.text = text
             text_document.score = emotions_list[0]['score']
             text_document.label = emotions_list[0]['label']
+            text_document.patient.id = patient_id
             text_document.save()
 
             # Passer les émotions à votre template

@@ -1,13 +1,24 @@
 from elasticsearch import Elasticsearch
 
-# Créez une instance du client Elasticsearch
-client = Elasticsearch()
+# Se connecter à Elasticsearch
+es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
-# Nom de l'index Elasticsearch que vous souhaitez vérifier
+# Nom de l'index à interroger
 index_name = 'textes'
 
-# Vérifiez si l'index existe
-if client.indices.exists(index=index_name):
-    print(f"L'index '{index_name}' existe.")
-else:
-    print(f"L'index '{index_name}' n'existe pas.")
+# Requête Elasticsearch
+query = {
+    "query": {
+        "match_all": {}
+    }
+}
+
+# Exécution de la requête
+response = es.search(index=index_name, body=query)
+
+# Traitement des résultats
+for hit in response['hits']['hits']:
+    # Traiter chaque document ici
+    document = hit['_source']
+    print(document)
+
