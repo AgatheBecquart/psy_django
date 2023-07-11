@@ -9,6 +9,7 @@ from authentication.models import BaseUser, Psychologue, Patient
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
+from django.utils.timezone import now
 
 @login_required
 def home(request):
@@ -136,7 +137,7 @@ def get_patient_texts(patient_id):
     }
     
     # Exécution de la recherche
-    response = es.search(index='textes', body=query)
+    response = es.search(index='texts', body=query)
     if 'hits' in response:
         hits = response['hits']['hits']
         texts = [hit['_source'] for hit in hits]
@@ -181,6 +182,51 @@ def pie_chart_view(emotion_distribution):
     graphic = base64.b64encode(image_png).decode('utf-8')
     
     return graphic
+
+
+def recherche_textes(request):
+    if request.method == 'POST':
+        username = request.POST.get('username','')
+        patient = get_patient_by_username(username)
+        patient_id = patient.id
+        emotion = request.POST.get('emotion','')
+        expression = request.POST.get('expression','')
+        
+        texts = get_text(patient_id, emotion, expression)
+        count = 0
+        for text in texts : 
+            count +=1
+        
+        return render(request, 'blog/resultat_recherche.html', {'texts':texts, 'count':count})
+    return render(request, 'blog/recherche_textes.html')
+        
+
+def get_text(patient_id, emotion, expression):
+    es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+    
+    query = {
+        "query":{
+            "bool":{
+                "must":[
+                    {"match":{"text":expression}},
+                    {"match":{"patient.id":patient_id}},
+                    {"match":{"emotion":emotion}},
+                    
+                ]
+            }
+        }
+    }
+   
+    
+    response = es.search(index='texts', body=query)
+    if 'hits' in response:
+        hits = response['hits']['hits']
+        texts = [hit['_source'] for hit in hits]
+        print(texts)
+        return texts
+    
+    return []
+
 
 
 

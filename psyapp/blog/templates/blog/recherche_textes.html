@@ -1,0 +1,10 @@
+<form method="post" action="{% url 'recherche_textes' %}">
+    {% csrf_token %}
+    <label for="username">Nom d'utilisateur du patient :</label>
+    <input type="text" name="username" id="username">
+    <label for="emotion">Emotion :</label>
+    <input type="text" name="emotion" id="emotion">
+    <label for="expression">Expression :</label>
+    <input type="text" name="expression" id="expression">
+    <button type="submit">Rechercher</button>
+</form>

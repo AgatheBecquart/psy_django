@@ -6,12 +6,18 @@
     {% if emotions %}
     <p>Texte:  {{text}} </p>
     <p>Label: {{ emotions.label }}</p>
+    <a href="{% url 'home' %}">Retour à l'accueil</a>
+    <a href="{% url 'create_text'%}">Ecrire un nouveau texte</a>
     {% else %}
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
       <button type="submit">Soumettre</button>
     </form>
+    <a href="{% url 'home' %}">Retour à l'accueil</a>
     {% endif %}
+
+
+
 
 {% endblock %}

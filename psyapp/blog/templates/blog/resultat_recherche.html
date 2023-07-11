@@ -1,0 +1,17 @@
+<h1>Résultat recherche</h1>
+
+{% if texts %}
+
+<h2>Il y a {{count}} résultats pour votre recherche</h2>
+  {% for text in texts %}
+  <p>
+  {{text.text}}
+  {{text.date}}
+  {{text.emotion}}</p>
+  {% endfor %}
+{% else %}
+  <p>Aucun texte ne correspond à cette recherche.</p>
+{% endif %}
+
+<a href="{% url 'recherche_textes' %}">Retour à la recherche</a>
+<a href="{% url 'home' %}">Retour à l'accueil</a>
