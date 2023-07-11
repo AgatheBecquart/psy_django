@@ -17,6 +17,10 @@ class Text(models.Model):
 from .document import TextDocument
 
 
+
+
+
+
     
 
 

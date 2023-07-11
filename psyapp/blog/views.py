@@ -6,6 +6,9 @@ from .models import Text
 from .document import TextDocument
 from .forms import PatientTextEntryForm
 from authentication.models import BaseUser, Psychologue, Patient
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 
 @login_required
 def home(request):
@@ -71,8 +74,7 @@ class TextCreateView(View):
             # Enregistrer le texte dans la base Elasticsearch
             text_document = TextDocument(meta={'id': new_text.id})
             text_document.text = text
-            text_document.score = emotions_list[0]['score']
-            text_document.label = emotions_list[0]['label']
+            text_document.emotion = emotion
             text_document.patient.id = patient_id
             text_document.save()
 
@@ -81,6 +83,104 @@ class TextCreateView(View):
             return render(request, 'blog/text_form.html', context)
         
         return render(request, 'blog/text_form.html', {'form': form})
+    
+    
+from django.shortcuts import render
+from elasticsearch import Elasticsearch
+from .models import Patient
+
+def emotions_patient(request):
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        
+        # Rechercher le patient dans la base de données PostgreSQL
+        patient = get_patient_by_username(username)
+        
+        if patient:
+            # Récupérer les textes du patient à partir de l'index Elasticsearch
+            texts = get_patient_texts(patient.id)
+            
+            # Obtenir la répartition des émotions associées aux textes
+            emotion_distribution = get_emotion_distribution(texts)
+            
+            graphique = pie_chart_view(emotion_distribution)
+            
+            # Rendre le template avec les résultats
+            return render(request, 'blog/patient_profile.html', {'patient': patient, 'emotion_distribution': emotion_distribution, 'graphique':graphique},)
+        
+        else:
+            error_message = "Aucun patient ne correspond à l'identifiant saisi."
+            return render(request, 'blog/emotions_patient.html', {'error_message': error_message})
+    
+    return render(request, 'blog/emotions_patient.html')
+
+
+def get_patient_by_username(username):
+    try:
+        patient = Patient.objects.get(username=username)
+        return patient
+    except Patient.DoesNotExist:
+        return None
+
+
+def get_patient_texts(patient_id):
+    # Connexion à Elasticsearch
+    es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+    
+    # Requête Elasticsearch pour récupérer les textes du patient
+    query = {
+        'query': {
+            'term': {'patient.id': patient_id}
+        },
+        'size': 1000  # Nombre maximal de textes à récupérer
+    }
+    
+    # Exécution de la recherche
+    response = es.search(index='textes', body=query)
+    if 'hits' in response:
+        hits = response['hits']['hits']
+        texts = [hit['_source'] for hit in hits]
+        print(texts)
+        return texts
+    
+    return []
+
+
+def get_emotion_distribution(texts):
+    emotion_distribution = {}
+    
+    for text in texts:
+        emotion = text.get('emotion')
+        if emotion:
+            if emotion in emotion_distribution:
+                emotion_distribution[emotion] += 1
+            else:
+                emotion_distribution[emotion] = 1
+    print(emotion_distribution)
+    return emotion_distribution
+
+
+def pie_chart_view(emotion_distribution):
+    plt.clf()
+    # Generate the pie chart
+    emotions = list(emotion_distribution.keys())
+    counts = list(emotion_distribution.values())
+
+    # Create the pie plot
+    plt.pie(counts, labels=emotions, autopct='%1.1f%%')
+    plt.axis('equal')
+
+    # Convert the plot to an image
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+
+    # Encode the image as base64
+    graphic = base64.b64encode(image_png).decode('utf-8')
+    
+    return graphic
 
 
 
