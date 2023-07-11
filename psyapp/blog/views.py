@@ -1,23 +1,36 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from authentication.models import Patient
-from .models import Text
-from .document import TextDocument
-from django.contrib.auth import get_user
-
-
-@login_required
-def home(request):
-    return render(request, 'blog/home.html')
-
 import requests
 from django.shortcuts import render
 from django.views import View
 from .models import Text
 from .document import TextDocument
 from .forms import PatientTextEntryForm
+from authentication.models import BaseUser, Psychologue, Patient
 
+@login_required
+def home(request):
+    user_type = None
+
+    try:
+        patient = Patient.objects.get(pk=request.user.pk)
+        user_type = 'patient'
+    except Patient.DoesNotExist:
+        try:
+            psychologue = Psychologue.objects.get(pk=request.user.pk)
+            user_type = 'psychologue'
+        except Psychologue.DoesNotExist:
+            pass
+
+    context = {
+        'user_type': user_type,
+    }
+
+    return render(request, 'blog/home.html', context)
+
+
+
+from django.shortcuts import render
+import requests
 
 API_URL = "https://api-inference.huggingface.co/models/michellejieli/emotion_text_classifier"
 API_TOKEN = "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"  # Remplacez par votre jeton d'API valide

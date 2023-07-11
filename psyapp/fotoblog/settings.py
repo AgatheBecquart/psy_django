@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_elasticsearch_dsl',
     'authentication',
     'blog',
     'django_elasticsearch_dsl',
@@ -78,6 +79,11 @@ DATABASES = {
     }
 }
 
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -133,3 +139,6 @@ ELASTICSEARCH_DSL = {
         'hosts': 'localhost:9200'  # ou l'adresse IP de votre serveur Elasticsearch
     },
 }
+STATIC_URL ='static/'
+
+STATICFILES_DIRS = [ BASE_DIR / 'static']

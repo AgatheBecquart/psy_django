@@ -25,5 +25,6 @@ urlpatterns = [
     path('patient/inscription/', authentication.views.patient_registration_view, name='patient_registration'),
     path('home/', blog.views.home, name='home'),
     path('text/create/', blog.views.TextCreateView.as_view(), name='create_text'),
+    path('register_patient/', authentication.views.register_patient, name='register_patient')
 ]
 

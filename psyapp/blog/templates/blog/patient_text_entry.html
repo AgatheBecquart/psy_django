@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Soumettre un nouvel état d'âme</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Soumettre</button>
+  </form>
+    
+    {% if emotions %}
+    <p>Label: {{ emotions.label }}</p>
+    <p>Score: {{ emotions.score|floatformat:2 }}</p>
+    {% endif %}
+
+{% endblock %}
