@@ -11,7 +11,7 @@
     {% elif user_type == 'patient' %}
     <h1>Bienvenue sur le tableau de bord</h1>
         <ul>
-        <li><a href="{% url 'patient_text_entry' %}">Créer un nouveau texte</a></li>
+        <li><a href="{% url 'create_text' %}">Créer un nouveau texte</a></li>
         </ul>
     {% endif %}
 {% endblock content %}
