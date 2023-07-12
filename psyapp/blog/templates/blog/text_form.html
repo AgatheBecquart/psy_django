@@ -1,17 +1,29 @@
+{% extends 'base.html' %}
 
 {% block content %}
+<div class="container">
   <h1>Soumettre un nouvel état d'âme</h1>
 
-    
-    {% if emotions %}
-    <p>Texte:  {{text}} </p>
-    <p>Label: {{ emotions.label }}</p>
-    {% else %}
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Soumettre</button>
-    </form>
-    {% endif %}
-
+  {% if emotions %}
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Texte: {{ text }}</h5>
+      <h5 class="card-title">Emotion prédite: {{ emotions.label }}</h5>
+      <a href="{% url 'home' %}" class="btn btn-primary">Retour à l'accueil</a>
+      <a href="{% url 'create_text' %}" class="btn btn-secondary">Ecrire un nouveau texte</a>
+    </div>
+  </div>
+  {% else %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="{{ form.text.id_for_label }}"></label>
+      {{ form.text }}
+    </div>
+    <button type="submit" class="btn btn-primary">Soumettre</button>
+  </form>
+  
+  <a href="{% url 'home' %}" class="btn btn-secondary">Retour à l'accueil</a>
+  {% endif %}
+</div>
 {% endblock %}

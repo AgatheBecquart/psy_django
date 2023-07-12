@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>Etude des émotions d'un patient :</h1>
+
+        <form method="post" action="{% url 'emotions_patient' %}" class="mb-4">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Nom d'utilisateur du patient :</label>
+                <input type="text" name="username" id="username" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
+
+        {% if patient %}
+            <div class="mb-4">
+                <h3>{{ patient.username }} :</h3>
+                <p>Date de naissance : {{ patient.date_naissance }}</p>
+                <p>Adresse : {{ patient.adresse }}</p>
+            </div>
+
+            <div class="mb-4">
+                <h3>Répartition des émotions :</h3>
+                {% if emotion_distribution %}
+                    <div style="width: 400px; height: 400px;">
+                        <canvas id="emotionChart"></canvas>
+                    </div>
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                    <script>
+                        var ctx = document.getElementById('emotionChart').getContext('2d');
+                        var data = {
+                            labels: [{% for emotion in emotion_distribution %}"{{ emotion }}", {% endfor %}],
+                            datasets: [{
+                                data: [{% for count in emotion_distribution.values %}{{ count }}, {% endfor %}],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.5)',
+                                    'rgba(54, 162, 235, 0.5)',
+                                    'rgba(255, 206, 86, 0.5)',
+                                    'rgba(75, 192, 192, 0.5)',
+                                    'rgba(153, 102, 255, 0.5)',
+                                    'rgba(255, 159, 64, 0.5)'
+                                ]
+                            }]
+                        };
+                        var options = {
+                            responsive: true
+                        };
+                        var chart = new Chart(ctx, {
+                            type: 'pie',
+                            data: data,
+                            options: options
+                        });
+                    </script>
+                {% else %}
+                    <p>Aucune émotion trouvée.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if error_message %}
+            <p class="text-danger">{{ error_message }}</p>
+        {% endif %}
+    </div>
+{% endblock content %}

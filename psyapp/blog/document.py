@@ -14,7 +14,7 @@ class TextDocument(Document):
     
     class Index:
         # Name of the Elasticsearch index
-        name = 'textes'
+        name = 'texts'
         # See Elasticsearch Indices API reference for available settings
         settings = {'number_of_shards': 1,
                     'number_of_replicas': 0}

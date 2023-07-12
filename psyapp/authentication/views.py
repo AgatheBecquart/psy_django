@@ -3,10 +3,24 @@ from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from . import forms
-
-
-from django.shortcuts import render, redirect
 from .forms import PsychologueRegistrationForm, PatientRegistrationForm
+from django.shortcuts import get_object_or_404
+from .models import Patient, Psychologue
+
+def check_user_type(request):
+    user_type = None
+
+    try:
+        patient = Patient.objects.get(pk=request.user.pk)
+        user_type = 'patient'
+    except Patient.DoesNotExist:
+        try:
+            psychologue = Psychologue.objects.get(pk=request.user.pk)
+            user_type = 'psychologue'
+        except Psychologue.DoesNotExist:
+            pass
+
+    return user_type
 
 def psychologue_registration_view(request):
     if request.method == 'POST':
@@ -31,12 +45,10 @@ def patient_registration_view(request):
     
     return render(request, 'authentication/patient_registration.html', {'form': form})
 
-
-from django.shortcuts import get_object_or_404
-from .models import Patient, Psychologue
-
 @login_required
 def register_patient(request):
+    user_type = check_user_type(request)
+
     if request.method == 'POST':
         form = PatientRegistrationForm(request.POST)
         if form.is_valid():
@@ -50,6 +62,7 @@ def register_patient(request):
 
     context = {
         'form': form,
+        'user_type': user_type,
     }
 
     return render(request, 'authentication/register_patient.html', context)

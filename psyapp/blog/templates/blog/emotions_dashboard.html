@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Tableau de bord des émotions</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="start_date" class="form-label">Date de début:</label>
+          <input type="date" class="form-control" id="start_date" name="start_date" required>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="end_date" class="form-label">Date de fin:</label>
+          <input type="date" class="form-control" id="end_date" name="end_date" required>
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Afficher la répartition des émotions</button>
+  </form>
+
+  {% if emotion_distribution %}
+    <h2>Répartition globale des émotions :</h2>
+    <div>
+      <img src="data:image/png;base64,{{ graphique }}" alt="Répartition des émotions">
+    </div>
+
+    <h2>Détails :</h2>
+    <ul>
+      {% for emotion, count in emotion_distribution.items %}
+      <li>{{ emotion }} : {{ count }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+      {{ error_message }}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

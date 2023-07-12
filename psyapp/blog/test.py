@@ -4,17 +4,18 @@ from elasticsearch import Elasticsearch
 es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
 
 # Nom de l'index à interroger
-index_name = 'textes'
+index_name = 'texts'
 
 # Requête Elasticsearch
 query = {
     "query": {
-        "match_all": {}
+        "term": {'patient.id':4}
     }
 }
 
 # Exécution de la requête
 response = es.search(index=index_name, body=query)
+
 
 # Traitement des résultats
 for hit in response['hits']['hits']:

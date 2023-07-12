@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h1>Recherche de textes</h1>
+
+    <form method="post" action="{% url 'recherche_textes' %}" class="mb-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="username" class="form-label">Nom d'utilisateur du patient :</label>
+            <input type="text" name="username" id="username" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="emotion" class="form-label">Emotion :</label>
+            <input type="text" name="emotion" id="emotion" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="expression" class="form-label">Expression :</label>
+            <input type="text" name="expression" id="expression" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+
+    {% if texts %}
+        <h2>Il y a {{ count }} résultat pour votre recherche</h2>
+        <div class="row">
+            {% for text in texts %}
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Texte : {{ text.text }}</h5>
+                        <h5 class="card-title">Emotion correspondante : {{ text.emotion }}</h5>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucun texte ne correspond à cette recherche.</p>
+    {% endif %}
+</div>
+
+{% endblock content %}

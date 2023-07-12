@@ -16,8 +16,6 @@ class Patient(BaseUser):
     date_naissance = models.DateField()
     adresse = models.CharField(max_length=200)
     psychologue_referent = models.ForeignKey(Psychologue, on_delete=models.SET_NULL, null=True, blank=True)
-    user = models.OneToOneField('self', on_delete=models.CASCADE,parent_link=True, related_name='patient_profile')
-
     def __str__(self):
         return self.username
 

@@ -1,17 +1,40 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-    {% if user_type == 'psychologue' %}
-    <h1>Bienvenue sur votre tableau de bord, psychologue !</h1>
-        <ul>
-        <li><a href="#repartition">Répartition des émotions</a></li>
-        <li><a href="#recherche">Recherche des émotions d'un patient</a></li>
-        <li><a href="#recherche-textes">Recherche de textes</a></li>
-        <li><a href="{% url 'register_patient' %}">Créer un nouveau patient</a></li>
-        </ul>
-    {% elif user_type == 'patient' %}
-    <h1>Bienvenue sur le tableau de bord</h1>
-        <ul>
-        <li><a href="{% url 'create_text' %}">Créer un nouveau texte</a></li>
-        </ul>
-    {% endif %}
+<div class="container">
+  {% if user_type == 'psychologue' %}
+  <!-- Pour les psychologues connectés -->
+  <h1>Bienvenue, Psychologue {{ user.username }}</h1>
+  <p>Accédez à votre espace personnel pour visualiser la répartition des émotions de vos patients et plus encore.</p>
+  <a href="{% url 'emotions_dashboard' %}" class="btn btn-primary">Accéder au tableau de bord</a>
+  {% endif %}
+  {% if user_type == 'patient' %}
+  <!-- Pour les patients connectés -->
+  <h1>Bienvenue, {{ user.username }}</h1>
+  <p>Accédez à votre espace personnel pour créer de nouveaux textes et suivre votre bien-être émotionnel.</p>
+  <a href="{% url 'create_text' %}" class="btn btn-primary">Créer un nouveau texte</a>
+  {% endif %}
+  {% if not user.is_authenticated %}
+  <!-- Pour les utilisateurs non connectés -->
+  <div class="container">
+    <h2>Des fonctionnalités puissantes pour les psychologues</h2>
+    <div class="feature">
+      <img src="{% static 'img/istockphoto-1326639660-612x612.jpg' %}" alt="Feature 1">
+      <h3>Tableau de bord des émotions</h3>
+      <p>Visualisez et analysez la répartition des émotions de vos patients de manière claire et intuitive.</p>
+    </div>
+    <div class="feature">
+      <img src="{% static 'img/Plutchik-wheel_fr.svg.png' %}" alt="Feature 2">
+      <h3>Recherche des émotions des patients</h3>
+      <p>Explorez les émotions spécifiques d'un patient et suivez l'évolution de son bien-être émotionnel.</p>
+    </div>
+    <div class="feature">
+      <img src="{% static 'img/1688993428443.jpg' %}" alt="Feature 3">
+      <h3>Création de nouveaux patients</h3>
+      <p>Créez facilement de nouveaux profils de patients et enregistrez leurs informations pour un suivi efficace.</p>
+    </div>
+  </div>
+  {% endif %}
+</div>
 {% endblock content %}
