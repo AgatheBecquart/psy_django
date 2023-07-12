@@ -9,7 +9,7 @@ from authentication.models import BaseUser, Psychologue, Patient
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
-from django.utils.timezone import now
+from datetime import datetime
 
 @login_required
 def home(request):
@@ -77,6 +77,8 @@ class TextCreateView(View):
             text_document.text = text
             text_document.emotion = emotion
             text_document.patient.id = patient_id
+            text_document.date = datetime.now()
+            text_document.patient.psychologue_referent = patient.psychologue_referent_id
             text_document.save()
 
             # Passer les émotions à votre template
@@ -214,7 +216,8 @@ def get_text(patient_id, emotion, expression):
                     
                 ]
             }
-        }
+        },
+         "size": 10000
     }
    
     

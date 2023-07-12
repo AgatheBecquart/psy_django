@@ -9,7 +9,7 @@ index_name = 'texts'
 # Requête Elasticsearch
 query = {
     "query": {
-        "term": {'patient.id':4}
+        "term": {'patient.id':5}
     }
 }
 
