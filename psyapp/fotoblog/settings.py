@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-9d6%fod11=iaodpv)eby&#1z4(5@--&(t=m4s95w6jo7$!spju
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0:80","127.0.0.1","0.0.0.0"]
 
 
 # Application definition
@@ -70,17 +70,17 @@ WSGI_APPLICATION = 'fotoblog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db_psy',
-        'USER': 'manon',
-        'PASSWORD': 'Youpie-59',
-        'HOST': '127.0.0.1',
+        'NAME': 'django_db_psy',
+        'USER': 'manon29',
+        'PASSWORD': 'Milo-59',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
 
 ELASTICSEARCH_DSL={
     'default': {
-        'hosts': 'localhost:9200'
+        'hosts': 'elasticsearch:9200'
     },
 }
 

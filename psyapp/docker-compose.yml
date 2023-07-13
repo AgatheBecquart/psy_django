@@ -1,0 +1,42 @@
+version: "3"
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    networks:
+      - mynetwork
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: django_db_psy
+      POSTGRES_USER: manon29
+      POSTGRES_PASSWORD: Milo-59
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - mynetwork
+
+volumes:
+  postgres_data:
+  elasticsearch_data:
+
+networks:
+  mynetwork:
+    driver: bridge
+ 

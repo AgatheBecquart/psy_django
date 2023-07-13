@@ -230,7 +230,3 @@ def get_text(patient_id, emotion, expression):
     
     return []
 
-
-
-
-

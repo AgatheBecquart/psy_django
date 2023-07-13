@@ -27,6 +27,6 @@ urlpatterns = [
     path('text/create/', blog.views.TextCreateView.as_view(), name='create_text'),
     path('register_patient/', authentication.views.register_patient, name='register_patient'),
     path('emotions_patient',blog.views.emotions_patient,name='emotions_patient'),
-    path('recherche_textes/', blog.views.recherche_textes, name="recherche_textes")
+    path('recherche_textes/', blog.views.recherche_textes, name="recherche_textes"),
 ]
 

@@ -1,14 +1,18 @@
 {% extends 'base.html' %}
-<h1>Recherche de patient</h1>
 
-<form method="post" action="{% url 'emotions_patient' %}">
-  {% csrf_token %}
-  <label for="username">Nom d'utilisateur du patient :</label>
-  <input type="text" name="username" id="username">
-  <button type="submit">Rechercher</button>
-</form>
+{% block content %}
+  <h1>Recherche de patient</h1>
 
-{% if error_message %}
+  <form method="post" action="{% url 'emotions_patient' %}">
+    {% csrf_token %}
+    <label for="username">Nom d'utilisateur du patient :</label>
+    <input type="text" name="username" id="username">
+    <button type="submit">Rechercher</button>
+  </form>
+
+  {% if error_message %}
     <p>{{ error_message }}</p>
-{% endif %}
+  {% endif %}
+{% endblock %}
+
 
