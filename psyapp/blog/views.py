@@ -97,6 +97,15 @@ def emotions_patient(request):
     context = {
         'user_type': user_type,
     }
+    
+    # Récupérer l'ID du psychologue connecté
+    psychologue_id = request.user.id
+
+    # Récupérer les patients du psychologue connecté
+    patients = Patient.objects.filter(psychologue_referent_id=psychologue_id)
+    
+    context['patients'] = patients
+    
     if request.method == 'POST':
         username = request.POST.get('username', '')
         
@@ -186,8 +195,26 @@ def recherche_textes(request):
     user_type = check_user_type(request)
     context = {
         'user_type': user_type,
+        'emotions_choices': [
+            ('anger', 'Anger'),
+            ('disgust', 'Disgust'),
+            ('fear', 'Fear'),
+            ('joy', 'Joy'),
+            ('neutral', 'Neutral'),
+            ('sadness', 'Sadness'),
+            ('surprise', 'Surprise'),
+        ],
     }
+    # Récupérer l'ID du psychologue connecté
+    psychologue_id = request.user.id
+
+    # Récupérer les patients du psychologue connecté
+    patients = Patient.objects.filter(psychologue_referent_id=psychologue_id)
+    
+    context['patients'] = patients
+
     if request.method == 'POST':
+        
         username = request.POST.get('username', '')
         patient = get_patient_by_username(username)
         patient_id = patient.id

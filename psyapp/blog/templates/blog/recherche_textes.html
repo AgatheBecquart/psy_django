@@ -7,13 +7,24 @@
 
     <form method="post" action="{% url 'recherche_textes' %}" class="mb-4">
         {% csrf_token %}
+        {% csrf_token %}
         <div class="mb-3">
             <label for="username" class="form-label">Nom d'utilisateur du patient :</label>
-            <input type="text" name="username" id="username" class="form-control">
+            <select name="username" id="username" class="form-select">
+                <option value="">Sélectionnez un patient</option>
+                {% for patient in patients %}
+                    <option value="{{ patient.username }}">{{ patient.username }}</option>
+                {% endfor %}
+            </select>
         </div>
         <div class="mb-3">
             <label for="emotion" class="form-label">Emotion :</label>
-            <input type="text" name="emotion" id="emotion" class="form-control">
+            <select name="emotion" id="emotion" class="form-select">
+                <option value="">Sélectionnez une émotion</option>
+                {% for emotion in emotions_choices %}
+                    <option value="{{ emotion.0 }}">{{ emotion.1 }}</option>
+                {% endfor %}
+            </select>
         </div>
         <div class="mb-3">
             <label for="expression" class="form-label">Expression :</label>
@@ -23,9 +34,9 @@
     </form>
 
     {% if texts %}
-        <h2>Il y a {{ count }} résultat pour votre recherche</h2>
-        <div class="row">
-            {% for text in texts %}
+    <h2>Il y a {{ count }} résultats pour votre recherche</h2>
+    <div class="row">
+        {% for text in texts %}
             <div class="col-md-6">
                 <div class="card mb-3">
                     <div class="card-body">
@@ -34,11 +45,13 @@
                     </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-    {% else %}
+        {% endfor %}
+    </div>
+{% else %}
+    {% if request.method == 'POST' %}
         <p>Aucun texte ne correspond à cette recherche.</p>
     {% endif %}
+{% endif %}
 </div>
 
 {% endblock content %}

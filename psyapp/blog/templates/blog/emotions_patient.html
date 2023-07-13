@@ -8,7 +8,12 @@
             {% csrf_token %}
             <div class="mb-3">
                 <label for="username" class="form-label">Nom d'utilisateur du patient :</label>
-                <input type="text" name="username" id="username" class="form-control">
+                <select name="username" id="username" class="form-select">
+                    <option value="">Sélectionnez un patient</option>
+                    {% for patient in patients %}
+                        <option value="{{ patient.username }}">{{ patient.username }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Rechercher</button>
         </form>
@@ -34,12 +39,13 @@
                             datasets: [{
                                 data: [{% for count in emotion_distribution.values %}{{ count }}, {% endfor %}],
                                 backgroundColor: [
-                                    'rgba(255, 99, 132, 0.5)',
-                                    'rgba(54, 162, 235, 0.5)',
-                                    'rgba(255, 206, 86, 0.5)',
-                                    'rgba(75, 192, 192, 0.5)',
-                                    'rgba(153, 102, 255, 0.5)',
-                                    'rgba(255, 159, 64, 0.5)'
+                                    'rgba(0, 0, 255, 0.5)',   // Couleur pour l'émotion 'anger'
+                                    'rgba(128, 0, 128, 0.5)',   // Couleur pour l'émotion 'disgust'
+                                    'rgba(255, 0, 0, 0.5)',   // Couleur pour l'émotion 'fear'
+                                    'rgba(0, 0, 128, 0.5)',   // Couleur pour l'émotion 'joy'
+                                    'rgba(255, 255, 0, 0.5)',   // Couleur pour l'émotion 'neutral'
+                                    'rgba(128, 0, 32, 0.5)',  // Couleur pour l'émotion 'sadness'
+                                    'rgba(255, 165, 0, 0.5)',  // Couleur pour l'émotion 'surprise'
                                 ]
                             }]
                         };
@@ -52,6 +58,7 @@
                             options: options
                         });
                     </script>
+                    
                 {% else %}
                     <p>Aucune émotion trouvée.</p>
                 {% endif %}
