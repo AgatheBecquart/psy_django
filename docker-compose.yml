@@ -1,0 +1,50 @@
+version: "3"
+services:
+
+  web:
+    build: .
+    ports:
+      - "8002:8001"
+    networks:
+      - mynetwork
+    command: bash -c "python psyapp/manage.py makemigrations && python psyapp/manage.py migrate && python psyapp/manage.py runserver 0.0.0.0:8001"
+    volumes:
+      - .:/code
+
+    depends_on:
+      - db
+      - elasticsearch
+  
+  db:
+    image: postgres
+    ports:
+      - "5433:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+  
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - mynetwork
+
+volumes:
+  postgres_data:
+  elasticsearch_data:
+
+networks:
+  mynetwork:
+    driver: bridge
