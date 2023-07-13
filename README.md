@@ -39,7 +39,6 @@ python manage.py migrate
 # Démarrez le serveur de développement Django en exécutant la commande suivante :
 python manage.py runserver
 ```
-Il faudra préalablement avoir crée une base de données Postgre et ElasticSearch. 
 
 ## Auteurs : 
 
